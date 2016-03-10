@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <!--#include virtual="/sinclude/common/weixin/weixin_dns_prefetch.shtml" -->
+
+    <title>需求</title>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_oneapm_js.shtml" -->
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_css.shtml" -->
+</head>
+
+<body>
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_js.shtml" -->
+    <script type="text/javascript">
+        $(function() {
+            // 未登录的用户需要登录
+            if (MaiDaDa.isWeixinLogin()) {
+                if (!MaiDaDa.getTTYCUserID()) {
+                    // 绑定用户手机号码
+                    MaiDaDa.redirectToBinding();
+                		return false;
+                }
+            } else {
+                // 登录
+                MaiDaDa.login();
+                return false;
+            }
+
+            var create_ajax = true;
+            var advisor = MaiDaDa.getParameter("advisor");
+            var type = parseInt(MaiDaDa.getParameter("type"), 10);
+            var create_demand_data = {
+                type: type,
+                car: {}
+            };
+
+            // 创建订单
+            var create_demand = function(data, callback) {
+                if (!create_ajax) {
+                    return false;
+                }
+                create_ajax = false;
+                data.demand_source = 6;
+                var valuationData = JSON.parse(localStorage.getItem('valuationState'));
+                if (valuationData&&valuationData.modelId&&valuationData.mileage&&valuationData.buyTime) {
+                    data.car = {
+                        car_id: valuationData.modelId,
+                        mileage: valuationData.mileage,
+                        start_run: (new Date(valuationData.buyTime).getTime()) / 1000
+                    };
+                    data.location = {
+                        city_id: '131',
+                        latitude: '39.92',//纬度
+                        longitude: '116.46'//经度
+                    };
+                }
+                MaiDaDa.ajax({
+                    type: 'get',
+                    dataType: 'jsonp',
+                    mimeType: 'application/javascript',
+                    url: 'http://wx.api.maidada.cn/web/v1/order/create_demand',
+                    data: data,
+                    complete: function(xhr, status) {
+                        create_ajax = true;
+                    },
+                    success: function(result) {
+                        if (result.code != 0) {
+                            layer.open({
+                                content: result.msg,
+                                btn: ['OK']
+                            });
+                        } else {
+
+                            var order_id = result.id_str;
+                            if (callback && typeof(callback) == "function") {
+                                callback();
+                            }
+
+                            if (result.repeat_order && result.repeat_order.content) {
+                                layer.open({
+                                    content: result.repeat_order.content,
+                                    btn: ['前往查看'],
+                                    shadeClose: false,
+                                    end: function() {
+                                        window.location.replace('status.shtml?id=' + order_id + "&type=" + type);
+                                        return true;
+                                    }
+                                });
+                            } else {
+                                window.location.replace('status.shtml?id=' + order_id + "&type=" + type);
+                                return true;
+                            }
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        layer.open({
+                            content: "网络错误，请重试（484）",
+                            btn: ['OK']
+                        });
+                        return false;
+                    }
+                });
+            };
+
+            LogCol && window.LogCol.event({
+                "event": "服务需求页面"
+            });
+            if (type == 20) {
+                if (!advisor) {
+                    layer.open({
+                        content: "请选择购车时间",
+                        btn: ['OK']
+                    });
+                    return false;
+                } else {
+                    create_demand_data.advisor_id = advisor;
+                }
+            }
+
+            create_demand(create_demand_data);
+        });
+    </script>
+</body>
+
+</html>

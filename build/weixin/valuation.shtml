@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <!--#include virtual="/sinclude/common/weixin/weixin_dns_prefetch.shtml" -->
+    <title>价格查询</title>
+    <!--#include virtual="/sinclude/common/weixin/weixin_oneapm_js.shtml" -->
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_css.shtml" -->
+</head>
+
+<body>
+    <div id="container"></div>
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_js.shtml" -->
+    <script type="text/javascript" src="/static/weixin/js/get-valuation.min.js"></script>
+</body>
+
+</html>

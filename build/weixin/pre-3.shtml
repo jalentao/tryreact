@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no,email=no"/>
+    <!--#include virtual="/sinclude/common/weixin/weixin_dns_prefetch.shtml" -->
+
+    <title>保养</title>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_oneapm_js.shtml" -->
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_css.shtml" -->
+    <link rel="stylesheet" type="text/css" href="http://www.maidada.cn/static/weixin/css/pre-n/introduce.css"/>
+    <style type="text/css">
+        body {
+            background: #fff;
+        }
+
+        .btnbox {
+            background: rgba(255, 255, 255, 0.95);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <img src="http://media.ttyongche.com/20160203%2F20160203_01.jpg" width="100%" class="lazy"/>
+        <div class="newbox shadow">
+            <h2 class="title">介绍</h2>
+            <div class="content_box">
+                <p class="box_p">管家上门接车，送去4S店服务，保养完成后送还。</p>
+            </div>
+        </div>
+        <div class="newbox shadow">
+            <h2 class="title">价值</h2>
+            <div class="content_box">
+                <div class="dotted_line"></div>
+                <span class="con_title">省时</span>
+                <div class="clearfix"></div>
+                <p class="box_p">管家上门接送车，您完全没必要在路上和4S店浪费宝贵的时间</p>
+                <img src="http://media.ttyongche.com/20160222%2F20160222_01.jpg" width="100%" class="lazy"/>
+            </div>
+            <div class="content_box">
+                <div class="dotted_line"></div>
+                <span class="con_title">省钱</span>
+                <div class="clearfix"></div>
+                <p class="box_p">管家按需定制保养项目，对4S店额外推荐的项目严格 把控，必须花的钱能省，不该花的钱坚决不花</p>
+                <img src="http://media.ttyongche.com/20160222%2F20160222_02.jpg" width="100%" class="lazy"/>
+            </div>
+            <div class="content_box">
+                <div class="dotted_line"></div>
+                <span class="con_title">省心</span>
+                <div class="clearfix"></div>
+                <p class="box_p">只去4S店保养，服务品质有保障</p>
+                <img src="http://media.ttyongche.com/20160222%2F20160222_03.jpg" width="100%" class="lazy"/>
+            </div>
+        </div>
+        <div class="newbox shadow">
+            <h2 class="title">流程</h2>
+            <div class="process_box">
+                <ul>
+                    <li>
+                        <img src="http://media.ttyongche.com/20160222%2F20160222_04.jpg" width="100%" class="lazy"/>
+                        <p class="box_p">1. 为您报价，若您满意，为您下单。</p>
+                    </li>
+                    <li>
+                        <img src="http://media.ttyongche.com/20160222%2F20160222_05.jpg" width="100%" class="lazy"/>
+                        <p class="box_p">2. 管家上门接车，送到4S店保养。</p>
+                    </li>
+                    <li>
+                        <img src="http://media.ttyongche.com/20160222%2F20160222_06.jpg" width="100%" class="lazy"/>
+                        <p class="box_p">3. 保养过程，管家全程把关。</p>
+                    </li>
+                    <li>
+                        <img src="http://media.ttyongche.com/20160222%2F20160222_07.jpg" width="100%" class="lazy"/>
+                        <p class="box_p">4. 保养完成后，您满意，再付款。</p>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="newbox shadow" id="last-newbox">
+            <h2 class="title">问题</h2>
+            <ul class="qa">
+                <li class="pa_list">费用包括哪些？</li>
+                <li class="pa_list">保养费用 + 88 元管家服务费（首单免服务费）。</li>
+                <li class="pa_list">服务时长多少？</li>
+                <li class="pa_list">送车 + 服务 + 还车 ≤ 5 小时。</li>
+                <li class="pa_list">车交给你们，放心吗？</li>
+                <li class="pa_list">您完全可以放心，因为：
+                    <ul class="resion">
+                        <li>每个管家都拥有 3 年以上实际驾龄和汽车技术知识。</li>
+                        <li>每个管家都经历 200 小时以上培训。</li>
+                        <li>您可以手机全程监控车辆位置、行驶路线、服务过程。</li>
+                        <li>由太平洋保险公司承保，平台承担所有交易问题。</li>
+                    </ul>
+                </li>
+                <li class="pa_list">怎么付款？</li>
+                <li class="pa_list">服务完成，您验收满意后，再付款。可通过麦大大 APP 或微信服务号付款，付款方式支持微信、支付宝、网银。</li>
+            </ul>
+        </div>
+        <div class="fix_margin_btom">&nbsp;</div>
+        <div class="btnbox">
+            <p class="intro_p">一对一解答服务明细</p>
+            <a href="javascript:void(0)" class="btn" id="a_next">让管家联系我</a>
+        </div>
+    </div>
+    <a href="/weixin/valuation.shtml?type=3" class="price lazy-design">
+        <span>价格查询</span>
+    </a>
+    <a href="javascript:void(0)" class="tel_call lazy-design" id="tel_call">
+        <span>电话咨询</span>
+    </a>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_js.shtml" -->
+    <script type="text/javascript">
+        $(function () {
+            LogCol && window.LogCol.event({
+                "event": "服务介绍页面"
+            }, true);
+
+            // 检查用户是否登录
+            var check_user_login = function () {
+                // 未登录的用户需要登录
+                if (MaiDaDa.isWeixinLogin()) {
+                    var uid = MaiDaDa.getTTYCUserID();
+                    if (uid) {
+                        LogCol && window.LogCol.upLog();
+                        return true;
+                    } else {
+                        MaiDaDa.redirectToBinding();
+                        return false;
+                    }
+                } else {
+                    // 登录
+                    MaiDaDa.login();
+                    return false;
+                }
+            };
+
+            LogCol && window.LogCol.upLog();
+
+            if (MaiDaDa.getParameter("from") === 'app') {
+                $('.btnbox').hide();
+                $('.lazy-design').hide();
+                $('.fix_margin_btom').css('margin-bottom', '0');
+            } else {
+                if (MaiDaDa.isWeixinLogin()) {
+                    // do nothing
+                } else {
+                    // 登录
+                    MaiDaDa.login();
+                }
+            }
+
+            var type = parseInt(MaiDaDa.getParameter("type"), 10);
+
+            if (type) {
+                // it's right, do nothing.
+            } else {
+                // 跳转到首页
+                MaiDaDa.redirectToWeixinIndex();
+            }
+
+            var toMakeOrder = function () {
+                var type = parseInt(MaiDaDa.getParameter("type"), 10);
+                if (type) {
+                    window.location.assign("make.shtml?ttag=wx_pre&type=" + type);
+                } else {
+                    // 跳转到首页
+                    MaiDaDa.redirectToWeixinIndex();
+                }
+            };
+            // 让管家联系我
+            $('#a_next').tap(function () {
+                if (check_user_login()) {
+                    toMakeOrder();
+                }
+            });
+
+            $(".tel_call, .price").on('touchstart', function() {
+                $(this).addClass("tel_call_white");
+            }).on('touchend', function() {
+                $(this).removeClass("tel_call_white");
+            });
+            $('#tel_call').tap(MaiDaDa.telConsult);
+        });
+    </script>
+</body>
+
+</html>

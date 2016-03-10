@@ -1,0 +1,391 @@
+<!DOCTYPE HTML>
+<html lang="zh-Hans-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <!--#include virtual="/sinclude/common/weixin/weixin_dns_prefetch.shtml" -->
+    <title>详情 - 麦大大管家</title>
+    <!--#include virtual="/sinclude/common/weixin/weixin_oneapm_js.shtml" -->
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_css.shtml" -->
+</head>
+
+<body>
+    <div class="template_demand_wrap" id="template_demand_wrap"></div>
+    <div class="fuwubox" id="fuwubox"></div>
+
+    <!--标题-->
+    <script id="template_status" type="x-tmpl-mustache">
+        <p class="circlebox" id="p_step_{{step}}">
+            <span class="circle empty"></span>
+            <span class="circle-tit circle-light">{{content}}</span> {{{extend}}}
+            <span class="light-small"></span>
+        </p>
+    </script>
+
+    <!--需求-->
+    <script id="template_demand_normal" type="x-tmpl-mustache">
+        <div class="demand_normal">
+            <img alt="{{butler_name}}" title="{{butler_name}}" src="{{advisor.headimg}}"/>
+            {{{demand_tip}}}
+            <ul class="desc" style="margin-top: 25px;">
+                <li>了解您的具体需求, 解答您的服务疑问</li>
+                <li>为您本次服务报价</li>
+                <li>如您确定服务, 再帮您下单</li>
+            </ul>
+            <a href="javascript: void(0)" id="cancel_demand_btn" class="cancel_demand">取消</a>
+        </div>
+    </script>
+    <script id="template_demand_cancel" type="x-tmpl-mustache">
+        <div class="demand_cancel">
+            <p class="tip">需求已取消</p>
+            <p class="dark">
+                您的需求已经取消，欢迎下次为您服务！
+            </p>
+            <p class="bottom_line">
+                取消时间<span class="dark">{{cancel.cancel_time}}</span>
+            </p>
+            <p>需求描述<span>{{type_name}}</span></p>
+            {{{cancel.butler_name}}}
+            <p>提交时间<span class="dark">{{create_time}}</span></p>
+        </div>
+    </script>
+
+    <!--下单-->
+    <script id="template_xiadan" type="x-tmpl-mustache">
+        <div class="box shdow">
+            <p class="titbar">{{sub_content}}</p>
+        </div>
+        <div class="box shdow">
+            <p>
+                <span class="col-one">服务项目</span>
+                <span class="col-two">{{type_name}}</span>
+            </p>
+            {{#has_items}}
+            <p>
+                <span class="col-one">项目明细</span>
+                {{#items}}
+                <span class="col-two">{{name}}
+                    <span class="money">{{desc}}</span>
+                </span>
+                {{/items}}
+            </p>
+            {{/has_items}}
+            {{#price.fuwufei}}
+            <p>
+                <span class="col-one">管家服务</span>
+                <span class="col-two"><i {{#price.zhekoujia}}style="font-style:normal;text-decoration:line-through;color:#ff6c00;" {{/price.zhekoujia}}>{{price.yuanjia}}</i>{{#price.zhekoujia}}&nbsp;{{price.zhekoujia}}（{{price.service_subsidy_content}}）{{/price.zhekoujia}}
+                </span>
+            </p>
+            {{/price.fuwufei}}
+            <p>
+                <span class="col-one">订单总价</span>
+                <span class="col-two" style="color:#ff6c00;">{{price.pay}}</span>
+            </p>
+            <p>
+                <span class="col-one">&nbsp;</span>
+            </p>
+            <p>
+                <span class="col-one">服务管家</span>
+                <span class="col-two">{{advisor.name}}<a href="tel:{{advisor.mobile}}" style="text-decoration:underline;color:#ff6c00;margin-left:0.5rem;">联系管家</a></span>
+            </p>
+            {{#take_car.location}}
+            <p>
+                <span class="col-one">取车地点</span>
+                <span class="col-two">{{take_car.location.name}}
+                    <br/>{{take_car.location.address}}</span>
+            </p>
+            {{/take_car.location}}
+            {{#take_car.time}}
+            <p>
+                <span class="col-one">取车时间</span>
+                <span class="col-two">{{take_car.time}}</span>
+            </p>
+            {{/take_car.time}}
+            <p>
+                <span class="col-one">&nbsp;</span>
+            </p>
+            <p>
+                <span class="col-one">订单编号</span>
+                <span class="col-two">{{id_str}}</span>
+            </p>
+            <p>
+                <span class="col-one">下单时间</span>
+                <span class="col-two">{{create_time}}</span>
+            </p>
+            <div class="clearfix"></div>
+        </div>
+    </script>
+
+    <!--接车-->
+    <script id="template_getcar" type="x-tmpl-mustache">
+        <div class="box shdow">
+            <p>
+                <span class="col-one">管家出发</span>
+                <span class="col-two">{{get_car.start_time}}</span>
+            </p>
+            {{#get_car.time_show}}
+            <p>
+                <span class="col-one">{{get_car.time_des}}</span>
+                <span class="col-two">{{get_car.time_show}}</span>
+            </p>
+            {{/get_car.time_show}} {{#get_car.show_extend}}
+            <p>
+                <span class="col-one">环检单</span>
+                <a id="hjd" class="col-two" href="{{hjd_image.url}}" style="text-decoration:underline;color:#ff6c00;">查看</a>
+            </p>
+            <p>
+                <span class="col-one">还车时间</span>
+                <span class="col-two">{{back_car.time}}</span>
+            </p>
+            <p>
+                <span class="col-one">还车地点</span>
+                <span class="col-two">{{back_car.location.address}}</span>
+            </p>
+            {{/get_car.show_extend}}
+            <div class="clearfix"></div>
+        </div>
+    </script>
+
+    <!--送车-->
+    <script id="template_takecar" type="x-tmpl-mustache">
+        <div class="box shdow">
+            <p>
+                <span class="col-one">开始送车</span>
+                <span class="col-two">{{take_car.start_time}}</span>
+            </p>
+            {{#take_car.time_show}}
+            <p>
+                <span class="col-one">{{take_car.time_des}}</span>
+                <span class="col-two">{{take_car.time_show}}</span>
+            </p>
+            {{/take_car.time_show}}
+            <p>
+                <span class="col-one">目的地</span>
+                <span class="col-two link-color"><a href="{{shop.url}}" style="text-decoration:underline;color:#ff6c00;">{{shop.name}}</a></span>
+            </p>
+            <div class="clearfix"></div>
+        </div>
+    </script>
+
+    <!--服务-->
+    <script id="template_fuwu" type="x-tmpl-mustache">
+        <div class="box shdow">
+            <p>
+                <span class="col-one">开始服务</span>
+                <span class="col-two">{{service.start_time}}</span>
+            </p>
+            {{#service.end_time}}
+            <p>
+                <span class="col-one">服务完成</span>
+                <span class="col-two">{{service.end_time}}</span>
+            </p>
+            {{/service.end_time}}
+            <div class="fw-img">
+                <ul class="fw-img-item">
+                    {{#service.images}}
+                    <li>
+                        <img src="{{url}}" />
+                    </li>
+                    {{/service.images}}
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </script>
+
+    <!--还车-->
+    <script id="template_backcar" type="x-tmpl-mustache">
+        <div class="box shdow">
+            <p>
+                <span class="col-one">开始还车</span>
+                <span class="col-two">{{back_car.start_time}}</span>
+            </p>
+            {{#back_car.time_show}}
+            <p>
+                <span class="col-one">{{back_car.time_des}}</span>
+                <span class="col-two">{{back_car.time_show}}</span>
+            </p>
+            {{/back_car.time_show}}
+            <div class="clearfix"></div>
+        </div>
+    </script>
+
+    <!--进京证-->
+    <script id="template_jinjing" type="x-tmpl-mustache">
+        <div class="box shdow">
+            <p class="titbar" {{{pay_green}}}>{{sub_content}}</p>
+        </div>
+        <div class="box shdow">
+            {{{pay_html}}}
+            <p>
+                <span class="col-one">服务项目</span>
+                <span class="col-two">{{type_name}}</span>
+            </p>
+            <p>
+                <span class="col-one">项目费用</span>
+                <span class="col-two">{{price.item}}</span>
+            </p>
+            <p>
+                <span class="col-one">快递费用</span>
+                <span class="col-two"><i {{#price.zhekoujia}}style="font-style:normal;text-decoration:line-through;color:#ff6c00;" {{/price.zhekoujia}}>{{price.yuanjia}}</i>{{#price.zhekoujia}}&nbsp;{{price.zhekoujia}}（{{price.service_subsidy_content}}）{{/price.zhekoujia}}</span>
+            </p>
+            <p>
+                <span class="col-one">订单总价</span>
+                <span class="col-two">{{price.pay}}</span>
+            </p>
+            <p>
+                <span class="col-one">&nbsp;</span>
+            </p>
+            <p>
+                <span class="col-one">车牌号</span>
+                <span class="col-two">{{driving_licence.car_no}}</span>
+            </p>
+            <p>
+                <span class="col-one">发动机号</span>
+                <span class="col-two">{{driving_licence.engine_no}}</span>
+            </p>
+            <p>
+                <span class="col-one">车架号</span>
+                <span class="col-two">{{driving_licence.vin}}</span>
+            </p>
+            <p>
+                <span class="col-one">&nbsp;</span>
+            </p>
+            <p>
+                <span class="col-one">收件人</span>
+                <span class="col-two">{{delivery.name}}</span>
+            </p>
+            <p>
+                <span class="col-one">联系电话</span>
+                <span class="col-two">{{delivery.mobile}}</span>
+            </p>
+            <p>
+                <span class="col-one">收件地址</span>
+                <span class="col-two">{{delivery.address}}</span>
+            </p>
+            <p>
+                <span class="col-one">&nbsp;</span>
+            </p>
+            <p>
+                <span class="col-one">订单编号</span>
+                <span class="col-two">{{id_str}}</span>
+            </p>
+            <p>
+                <span class="col-one">下单时间</span>
+                <span class="col-two">{{create_time}}</span>
+            </p>
+            <div class="clearfix"></div>
+        </div>
+    </script>
+
+    <!--付款-->
+    <script id="template_pay" type="x-tmpl-mustache">
+        <div class="box shdow">
+            <p class="titbar" {{{pay_green}}}>{{sub_content}}</p>
+        </div>
+        <div class="box shdow">
+            <p>
+                <span class="col-one">服务项目</span>
+                <span class="col-two">{{type_name}}</span>
+            </p>
+            {{#has_items}}
+            <p>
+                <span class="col-one">项目明细</span>
+                {{#items}}
+                <span class="col-two">{{name}}
+                    <span class="money">{{desc}}</span>
+                </span>
+                {{/items}}
+            </p>
+            {{/has_items}}
+            {{#price.fuwufei}}
+            <p>
+                <span class="col-one">管家服务</span>
+                <span class="col-two">
+                    <i {{#price.zhekoujia}}style="font-style:normal;text-decoration:line-through;color:#ff6c00;" {{/price.zhekoujia}}>{{price.yuanjia}}</i>{{#price.zhekoujia}}&nbsp;{{price.zhekoujia}}（{{price.service_subsidy_content}}）{{/price.zhekoujia}}
+                </span>
+            </p>
+            {{/price.fuwufei}}
+            <p>
+                <span class="col-one">订单总价</span>
+                <span class="col-two">{{price.pay}}</span>
+            </p>
+            {{#price.coupon_price}}
+            <p>
+                <span class="col-one">优惠金额</span>
+                <span class="col-two">{{price.coupon_price}}</span>
+            </p>
+            {{/price.coupon_price}}
+            {{#price.real_price}}
+            <p>
+                <span class="col-one">实付金额</span>
+                <span class="col-two" style="color:#ff6c00;">{{price.real_price}}</span>
+            </p>
+            {{/price.real_price}}
+            {{{pay_html}}}
+            <div class="clearfix"></div>
+        </div>
+    </script>
+
+    <!--评价-->
+    <script id="template_pingjia_todo" type="x-tmpl-mustache">
+        <div class="box shdow">
+            <p class="titbar">您的建议使我们的管家服务越来越好</p>
+            <div class="pingjia" id="div_punctuality">准时
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+            </div>
+            <div class="pingjia" id="div_attitude">态度
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+            </div>
+            <div class="pingjia" id="div_professional">专业
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+                <span class="star star_on"></span>
+            </div>
+            <div class="pj-show">
+                <p class="titbar">
+                    <textarea placeholder="欢迎表达您的建议和意见" style='overflow:scroll;overflow-y:hidden;overflow-x:hidden;border:solid 1px grey;width:100%;' id="content"></textarea>
+                </p>
+            </div>
+            <a href="javascript:void(0)" class="submitbox">
+                <button type="button" class="submitbtn" id="btn_comment">提交</button>
+            </a>
+            <div class="clearfix"></div>
+        </div>
+    </script>
+
+    <!--评价已经完成-->
+    <script id="template_pingjia_done" type="x-tmpl-mustache">
+        <div class="box shdow">
+            <div class="pingjia" id="div_punctuality">准时 {{{comment.div_punctuality}}}</div>
+            <div class="pingjia" id="div_attitude">态度 {{{comment.div_attitude}}}</div>
+            <div class="pingjia" id="div_professional">专业 {{{comment.div_professional}}}</div>
+            <div class="pj-show">
+                <p class="titbar" style='word-break: break-all; word-wrap:break-word;'>{{comment.content}}</p>
+                <p class="titbar fr">{{comment.update_time}}</p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </script>
+
+    <button type="button" id="btn_car_location" style="display: none; background-image:url(http://media.ttyongche.com/car_location.png);border-radius: 100%;width: 50px;height: 50px;position: fixed; bottom:20px;right: 20px; background-size: 100%"></button>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_js.shtml" -->
+    <script type="text/javascript" src="/static/weixin/js/order-status.min.js"></script>
+</body>
+
+</html>

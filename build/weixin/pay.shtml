@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <!--#include virtual="/sinclude/common/weixin/weixin_dns_prefetch.shtml" -->
+
+    <title>支付 - 麦大大管家</title>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_oneapm_js.shtml" -->
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_css.shtml" -->
+    <style>
+        @media screen and (max-width:480px) {
+            body {
+                font-size: 10px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:481px) and (max-width:640px) {
+            body {
+                font-size: 15px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:641px) and (max-width:720px) {
+            body {
+                font-size: 20px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:721px) {
+            body {
+                font-size: 22.5px;
+                -webkit-text-size-adjust: none;
+            }
+            input {
+                font-size: 22.5px;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #eceded;
+        }
+
+        ul,
+        ol {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        html,
+        body {
+            position: relative;
+            height: 100%;
+        }
+
+        .wrap {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .info_top {
+            color: #333;
+            width: 100%;
+            background: #fff;
+        }
+
+        .info_p {
+            height: 3rem;
+            line-height: 3rem;
+            width: 90.625%;
+            margin: 0 auto;
+            border-bottom: 1px solid #f2f0f0;
+            font-size: 1rem;
+        }
+
+        .info_p:last-child {
+            border-bottom: none;
+        }
+
+        .P_left {
+            float: left;
+        }
+
+        .P_right {
+            float: right;
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        .color_gray {
+            color: #999;
+        }
+
+        .color_orange {
+            color: #ff6c00;
+        }
+
+        .btn {
+            display: block;
+            width: 90.625%;
+            height: 3rem;
+            line-height: 3rem;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #fff;
+            background: #ff6c00;
+            border-radius: 0.2rem;
+            position: absolute;
+            bottom: 1rem;
+            left: 4.6875%;
+        }
+
+        .mask {
+            width: 100%;
+            display: none;
+            background: rgba(0, 0, 0, 0.8);
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 99;
+        }
+
+        .mask_content {
+            width: 90.625%;
+            margin: 0 auto;
+        }
+
+        .mask_p {
+            height: 3rem;
+            line-height: 3rem;
+            background: #fff;
+            border-radius: 0.3rem;
+            color: #333;
+            text-align: center;
+            font-size: 1rem;
+            margin: 1rem 0;
+        }
+
+        .coupon {
+            padding: 0 5px;
+        }
+
+        .coupon li {
+            padding: 1rem 1rem 0rem;
+            margin-bottom: 1rem;
+            color: #333;
+            border-radius: 0.4rem;
+            background: url(http://www.maidada.cn/static/weixin/img/weizhang.png) no-repeat center center;
+            background-size: 100% 100%;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            border-bottom: 0.4rem solid #000;
+            position: relative;
+        }
+
+        .li_p {
+            font-size: 1rem;
+            line-height: 1.8rem;
+        }
+
+        .li_p:last-child {
+            margin-top: 0.5rem;
+            line-height: 1.6rem;
+            font-size: 0.9rem;
+        }
+
+        .txt_big {
+            font-size: 1.2rem;
+        }
+
+        .money {
+            font-size: 1.5rem;
+            color: #ff6c00;
+            float: right;
+        }
+
+        .li_img {
+            display: block;
+            width: 2rem;
+            height: 2rem;
+            position: absolute;
+            right: 15%;
+            bottom: 1.2rem;
+        }
+
+        .select {
+            background: url(http://www.maidada.cn/static/weixin/img/yxz@3x.png) no-repeat;
+            background-size: 2rem 2rem;
+        }
+
+        .select_p {
+            background: #fff url(http://www.maidada.cn/static/weixin/img/yxz@3x.png) no-repeat 95% center;
+            background-size: 2rem 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="info_top">
+            <p class="info_p">订单总价
+                <span class="P_right" id="order_price"></span>
+            </p>
+            <p class="info_p discount">优惠券
+                <span class="P_right color_gray" id="coupon_subject"></span>
+            </p>
+            <p class="info_p">还需支付
+                <span class="P_right color_orange" id="order_pay"></span>
+            </p>
+            <div class="clearfix"></div>
+        </div>
+
+        <a href="javascript:void(0)" class="btn" id="btn_pay">微信支付</a>
+    </div>
+    <div class="mask">
+        <div class="mask_content">
+            <p class="mask_p" id="coupon_na">本次不使用优惠券</p>
+            <ul class="coupon" id="ul_coupons">
+            </ul>
+        </div>
+    </div>
+
+    <script id="template_coupon" type="x-tmpl-mustache">
+        <li id="{{id}}" data-coupon_amount="{{coupon_amount}}" data-pay_price="{{pay_price}}">
+            <span class="li_img"></span>
+            <p class="li_p">
+                <span class="txt_big">{{coupon_name}}</span>
+                <span class="money">￥{{coupon_amount}}</span>
+            </p>
+            <p class="li_p">{{end_date}}
+            </p>
+            <p class="li_p">{{send_reason}}</p>
+        </li>
+    </script>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_js.shtml" -->
+    <script type="text/javascript">
+        $(function() {
+
+            // 未登录的用户需要登录
+            if (MaiDaDa.isWeixinLogin()) {
+                var uid = MaiDaDa.getTTYCUserID();
+                if (uid) {} else {
+                    MaiDaDa.redirectToBinding();
+                    return false;
+                }
+            } else {
+                // 登录
+                MaiDaDa.login();
+                return false;
+            }
+
+            LogCol && window.LogCol.upLog();
+
+            // 点击优惠券展示弹窗
+            $(".discount").on('tap', function() {
+                $(".mask").show();
+            });
+
+            MaiDaDa.preLoadImages(['http://www.maidada.cn/static/weixin/img/weizhang.png']);
+
+            // 获取参数
+            var order_id = MaiDaDa.getParameter('id'),
+                type = MaiDaDa.getParameter('type');
+
+            // 参数错误跳转到微信公众号主页
+            if (!order_id || !type) {
+                MaiDaDa.redirectToWeixinIndex();
+            }
+
+            // 显示价格
+            var pay_info_show = function(pay_info) {
+                // 订单总价
+                $("#order_price").html(MaiDaDa.fen2yuan(pay_info.price_total) + '元');
+                // 还需支付
+                $("#order_pay").html(MaiDaDa.fen2yuan(pay_info.need_pay) + '元');
+
+                if (pay_info.couponsum) {
+                    $("#coupon_subject").removeClass("color_gray");
+                    $("#coupon_subject").html('-' + MaiDaDa.fen2yuan(pay_info.couponsum) + '元');
+                } else {
+                    if (pay_info.couponid == -1) {
+                        $("#coupon_subject").removeClass("color_gray").addClass("color_gray");
+                        $("#coupon_subject").html('本次不使用优惠券');
+                    } else {
+                        $("#coupon_subject").removeClass("color_gray").addClass("color_gray");
+                        $("#coupon_subject").html('暂无可用优惠券');
+                    }
+                }
+            }
+
+            // 优惠券列表的回调函数
+            var list_coupons_callback = function(coupons, status) {
+                if (coupons.length <= 0) {
+                    $(".discount").off('tap');
+                }
+                for (var index in coupons) {
+                    var coupon = coupons[index];
+                    coupon.coupon_amount = MaiDaDa.fen2yuan(coupon.coupon_amount);
+                    var template = $('#template_coupon').html();
+                    var rendered = Mustache.render(template, coupon);
+                    $('#ul_coupons').append(rendered);
+                }
+            }
+
+            // 优惠券点击
+            $("#ul_coupons").on('tap', 'li', function(e) {
+                var pay_info = MaiDaDa.getItem('pay_info_' + order_id);
+
+                pay_info.couponid = $(this).attr('id');
+                pay_info.couponsum = $(this).attr('data-coupon_amount') * 100;
+                pay_info.need_pay = $(this).attr('data-pay_price');
+
+                if (pay_info.need_pay <= 0) {
+                    pay_info.need_pay = 0;
+                }
+
+                $(".li_img").addClass("select");
+                $(this).siblings().children(".li_img").removeClass("select");
+                $(".mask_p").removeClass("select_p");
+                $(".mask").hide();
+
+                MaiDaDa.setItem('pay_info_' + order_id, pay_info, 60000, 200);
+                pay_info_show(pay_info);
+            });
+
+            // 不使用优惠券
+            $("#coupon_na").on('tap', function(e) {
+                var pay_info = MaiDaDa.getItem('pay_info_' + order_id);
+
+                pay_info.couponid = -1;
+                pay_info.couponsum = 0;
+                pay_info.need_pay = pay_info.price_total - pay_info.couponsum;
+
+                if (pay_info.need_pay <= 0) {
+                    pay_info.need_pay = 000;
+                }
+
+                MaiDaDa.setItem('pay_info_' + order_id, pay_info, 60000, 200);
+
+                $(this).addClass("select_p");
+                $(".li_img").removeClass("select");
+                $(".mask").hide();
+
+                pay_info_show(pay_info);
+            });
+
+            // 支付前处理的回调
+            var pay_init_callback = function(response, status) {
+                if (status === true) {
+
+                    var pay_info = {
+                        type: 200,
+                        need_pay: 99999999,
+                        price_total: 99999999,
+                        order_id: order_id,
+                        couponid: 0,
+                        couponsum: 0,
+                        balance: 0,
+                    };
+
+                    if (response.coupon) {
+                        pay_info.couponid = response.coupon.id;
+                        pay_info.couponsum = response.coupon.coupon_amount;
+                        pay_info.need_pay = response.coupon.pay_price;
+                    } else {
+                        pay_info.need_pay = response.need_pay;
+                    }
+
+                    if (response.balance) {
+                        pay_info.balance = response.balance;
+                    }
+
+                    pay_info.price_total = response.price;
+
+                    pay_info_show(pay_info);
+                    // pay init的结果放入本地存储
+                    MaiDaDa.setItem('pay_info_' + order_id, pay_info, 60000, 200);
+
+                    MaiDaDa.listCouponsForOrder(order_id, list_coupons_callback);
+                } else {
+                    layer.open({
+                        content: MaiDaDa.getErrorMessage(),
+                        btn: ['OK']
+                    });
+                    return false;
+                }
+            };
+
+            // 查询价格等
+            MaiDaDa.payInit(order_id, type, pay_init_callback);
+
+            var jsapi_pay_config = {};
+
+            var call_jsapi_pay = function() {
+                WeixinJSBridge.invoke('getBrandWCPayRequest', jsapi_pay_config,
+                    function(res) {
+                        $("#btn_pay").html('微信支付');
+                        if (res.err_msg == "get_brand_wcpay_request:ok") {
+                            layer.open({
+                                content: "支付成功，若订单状态没有发生变化，请稍后刷新查看",
+                                btn: ['OK']
+                            });
+                            window.location.assign('status.shtml?id=' + order_id + "&type=" + type);
+                        } else {
+                            if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                                layer.open({
+                                    content: "您已经取消支付",
+                                    btn: ['OK']
+                                });
+                                return false;
+                            }
+                            if (res.err_desc) {
+                                layer.open({
+                                    content: res.err_desc,
+                                    btn: ['OK']
+                                });
+                            }
+                        }
+                    });
+            };
+
+            // 支付的回调函数
+            var pay_pre_callback = function(response, status) {
+                if (status === true) {
+
+                    // 0元支付
+                    var pay_info = MaiDaDa.getItem('pay_info_' + order_id);
+                    if (pay_info && pay_info.need_pay == 0 && response.success) {
+                        layer.open({
+                            content: "支付成功，若订单状态没有发生变化，请稍后刷新查看",
+                            btn: ['OK']
+                        });
+                        window.location.assign('status.shtml?id=' + order_id + "&type=" + type);
+                        return true;
+                    }
+
+                    // 将参数转换
+                    jsapi_pay_config.appId = response.weipay.app_id;
+                    jsapi_pay_config.timeStamp = response.weipay.time_stamp;
+                    jsapi_pay_config.nonceStr = response.weipay.nonce_str;
+                    jsapi_pay_config.package = response.weipay.package_value;
+                    jsapi_pay_config.signType = response.weipay.sign_type;
+                    jsapi_pay_config.paySign = response.weipay.sign;
+
+                    if (typeof WeixinJSBridge == "undefined") {
+                        if (document.addEventListener) {
+                            document.addEventListener('WeixinJSBridgeReady', call_jsapi_pay, false);
+                        } else if (document.attachEvent) {
+                            document.attachEvent('WeixinJSBridgeReady', call_jsapi_pay);
+                            document.attachEvent('onWeixinJSBridgeReady', call_jsapi_pay);
+                        }
+                    } else {
+                        call_jsapi_pay();
+                    }
+                } else {
+                    layer.open({
+                        content: MaiDaDa.getErrorMessage(),
+                        btn: ['OK']
+                    });
+                    return false;
+                }
+            };
+
+            // 点击去支付按钮去支付
+            $("#btn_pay").on('tap', function(e) {
+
+                $(e.target).html('正在支付中...');
+                var pay_info = MaiDaDa.getItem('pay_info_' + order_id);
+                if (!pay_info) {
+                    layer.open({
+                        content: '未知错误(410)',
+                        btn: ['OK']
+                    });
+                }
+
+                if (pay_info.couponid == -1) {
+                    pay_info.couponid = 0;
+                }
+
+                MaiDaDa.payPre(order_id, pay_info.type, pay_info.need_pay, pay_info.couponid, pay_info.couponsum, pay_info.balance, pay_pre_callback);
+            });
+        });
+    </script>
+</body>
+
+</html>

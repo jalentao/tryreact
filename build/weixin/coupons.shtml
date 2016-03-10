@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <!--#include virtual="/sinclude/common/weixin/weixin_dns_prefetch.shtml" -->
+
+    <title>优惠券</title>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_oneapm_js.shtml" -->
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_css.shtml" -->
+    <style type="text/css">
+        @media screen and (max-width:480px) {
+            body {
+                font-size: 10px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:481px) and (max-width:640px) {
+            body {
+                font-size: 15px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:641px) and (max-width:720px) {
+            body {
+                font-size: 20px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:721px) {
+            body {
+                font-size: 22.5px;
+                -webkit-text-size-adjust: none;
+            }
+            input {
+                font-size: 22.5px;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #eceded;
+        }
+
+        body,
+        html {
+            height: 100%;
+        }
+
+        html {
+            -ms-touch-action: none;
+        }
+
+        ul,
+        ol {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        button {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        input,
+        button {
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            outline: none;
+        }
+
+        input::-webkit-input-placeholder {
+            /* WebKit browsers */
+            color: #cccccc;
+        }
+
+        input:-moz-placeholder {
+            /* Mozilla Firefox 4 to 18 */
+            color: #cccccc;
+        }
+
+        input::-moz-placeholder {
+            /* Mozilla Firefox 19+ */
+            color: #cccccc;
+        }
+
+        input:-ms-input-placeholder {
+            /* Internet Explorer 10+ */
+            color: #cccccc;
+        }
+
+        .wrap {
+            width: 100%;
+        }
+
+        .mask {
+            width: 90.625%;
+            margin: 0 auto;
+        }
+
+        .duihuan {
+            width: 90.625%;
+            height: 3rem;
+            background: #fff;
+            color: #333;
+            margin: 1rem 0;
+            border-radius: 0.3rem;
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            left: 4.6875%;
+        }
+
+        .dui_txt {
+            background: #fff;
+            height: 3rem;
+            width: 75.5%;
+            padding: 0 2%;
+            font-size: 1.1rem;
+            float: left;
+            border-right: 1px solid #efefef;
+            border-radius: 0.3rem 0 0 0.3rem;
+        }
+
+        .dui_btn {
+            background: #fff;
+            height: 3rem;
+            width: 20%;
+            float: right;
+            color: #ff6c00;
+            font-size: 1.2rem;
+            border-radius: 0 0.3rem 0.3rem 0;
+        }
+
+        .coupon {
+            clear: both;
+        }
+
+        .coupon li {
+            padding: 1rem 1rem 0rem;
+            margin-bottom: 1rem;
+            color: #333;
+            border-radius: 0.4rem;
+            background-size: 100% 100%;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            border-bottom: 0.4rem solid #000;
+        }
+
+        .li_p {
+            font-size: 1rem;
+            line-height: 1.8rem;
+        }
+
+        .li_p:last-child {
+            margin-top: 0.5rem;
+            line-height: 1.6rem;
+            font-size: 0.9rem;
+        }
+
+        .txt_big {
+            font-size: 1.2rem;
+        }
+
+        .money {
+            font-size: 1.5rem;
+            color: #ff6c00;
+            float: right;
+        }
+
+        .date {}
+
+        .baoyang {
+            background: url(http://www.maidada.cn/static/weixin/img/baoyang.png) no-repeat center center;
+        }
+
+        .tiemo {
+            background: url(http://www.maidada.cn/static/weixin/img/tiemo.png) no-repeat center center;
+        }
+
+        .qimianhuli {
+            background: url(http://www.maidada.cn/static/weixin/img/qimianhuli.png) no-repeat center center;
+        }
+
+        .shenduclear {
+            background: url(http://www.maidada.cn/static/weixin/img/shenduclear.png) no-repeat center center;
+        }
+
+        .banpen {
+            background: url(http://www.maidada.cn/static/weixin/img/banpen.png) no-repeat center center;
+        }
+
+        .nianjian {
+            background: url(http://www.maidada.cn/static/weixin/img/nianjian.png) no-repeat center center;
+        }
+
+        .jinjing {
+            background: url(http://www.maidada.cn/static/weixin/img/jinjing.png) no-repeat center center;
+        }
+
+        .weizhang {
+            background: url(http://www.maidada.cn/static/weixin/img/weizhang.png) no-repeat center center;
+        }
+
+        .fuwu {
+            background: url(http://www.maidada.cn/static/weixin/img/fuwu.png) no-repeat center center;
+        }
+
+        .common {
+            background: url(http://www.maidada.cn/static/weixin/img/common.png) no-repeat center center;
+        }
+
+        .penqi {
+            background: url(http://www.maidada.cn/static/weixin/img/penqi.png) no-repeat center center;
+        }
+
+        .shougongdan {
+            background: url(http://www.maidada.cn/static/weixin/img/shougongdan.png) no-repeat center center;
+        }
+
+        .cha {
+            display: block;
+            width: 100%;
+            color: #999;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 0.5rem 0 1.5rem;
+        }
+
+        #wrapper {
+            position: absolute;
+            z-index: 1;
+            top: 5rem;
+            bottom: 0px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        #scroller {
+            position: absolute;
+            left: 4.6875%;
+            z-index: 1;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        .pullDown,
+        .pullUp {
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            font-size: 12px;
+            color: #888;
+            font-family: Arial, Microsoft YaHei;
+        }
+
+        .pullUp {
+            display: block;
+        }
+
+        .loader {
+            display: inline-block;
+            font-size: 0px;
+            padding: 0px;
+            display: none;
+        }
+
+        .loader span {
+            vertical-align: middle;
+            border-radius: 100%;
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0 2px;
+            -webkit-animation: loader 0.8s linear infinite alternate;
+            animation: loader 0.8s linear infinite alternate;
+        }
+
+        .loader span:nth-child(1) {
+            -webkit-animation-delay: -1s;
+            animation-delay: -1s;
+            background: rgba(245, 103, 115, 0.6);
+        }
+
+        .loader span:nth-child(2) {
+            -webkit-animation-delay: -0.8s;
+            animation-delay: -0.8s;
+            background: rgba(245, 103, 115, 0.8);
+        }
+
+        .loader span:nth-child(3) {
+            -webkit-animation-delay: -0.26666s;
+            animation-delay: -0.26666s;
+            background: rgba(245, 103, 115, 1);
+        }
+
+        .loader span:nth-child(4) {
+            -webkit-animation-delay: -0.8s;
+            animation-delay: -0.8s;
+            background: rgba(245, 103, 115, 0.8);
+        }
+
+        .loader span:nth-child(5) {
+            -webkit-animation-delay: -1s;
+            animation-delay: -1s;
+            background: rgba(245, 103, 115, 0.4);
+        }
+
+        @ keyframes loader {
+            from {
+                transform: scale(0, 0);
+            }
+            to {
+                transform: scale(1, 1);
+            }
+        }
+
+        @ -webkit-keyframes loader {
+            from {
+                -webkit-transform: scale(0, 0);
+            }
+            to {
+                -webkit-transform: scale(1, 1);
+            }
+        }
+        /*过期*/
+
+        .margin-top li {
+            display: block;
+            opacity: 0.4;
+        }
+
+        .emptybox {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            width: 100%;
+        }
+
+        .empty {
+            display: block;
+            width: 36.25%;
+            margin: 0 auto;
+        }
+
+        .empty_p {
+            color: #999;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 1.3rem;
+        }
+
+        .momey_small {
+            font-size: 1rem;
+        }
+
+        .cha_btn {
+            position: absolute;
+            bottom: 4rem;
+            left: 34%;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -o-box-sizing: border-box;
+            -ms-box-sizing: border-box;
+            box-sizing: border-box;
+            width: 32%;
+            height: 2.8rem;
+            line-height: 2.8rem;
+            background: #fff;
+            border: 1px solid #ff6600;
+            color: #ff6600;
+            border-radius: 0.2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+    </style>
+    <title>优惠券</title>
+</head>
+
+<body>
+    <div class="duihuan">
+        <input type="text" name="youhui" placeholder="请输入优惠券兑换码" class="dui_txt" id="input_duihuanma" />
+        <button type="button" class="dui_btn" id="btn_duihuan">兑换</button>
+    </div>
+
+    <div class="emptybox" id="div_empty" style="display: none;">
+        <img src="http://media.ttyongche.com/20160105%2Ftb.png" class="empty" />
+        <p class="empty_p">您好，您目前还没有优惠券</p>
+        <p class="empty_p useless_link">查看过期优惠券</p>
+    </div>
+
+    <a href="services.shtml" class="cha_btn" style="display:none;">查看服务</a>
+
+    <div class="wrap" id="wrapper">
+        <div class="mask" id="scroller">
+            <ul class="coupon" id="ul_coupon">
+            </ul>
+            <a href="javascript:void(0)" class="cha" id="a_bottom">上拉加载更多...</a>
+        </div>
+    </div>
+
+    <script id="template_coupon" type="x-tmpl-mustache">
+        <li class="{{class}}" data-coupon-id="{{id}}">
+            <p class="li_p">
+                <span class="txt_big">{{coupon_name}}</span>
+                <span class="money">
+                    <span class="momey_small">￥</span>{{coupon_yuan}}</span>
+            </p>
+            <p class="li_p">{{end_date}}
+                <!-- <span class="date"></span> -->
+            </p>
+            <p class="li_p">{{send_reason}}</p>
+        </li>
+    </script>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_js.shtml" -->
+    <script src="http://www.maidada.cn/static/common/js/iscroll-lite.min.5.1.3.js"></script>
+    <script type="text/javascript">
+        // 检查用户是否登录
+        var check_user_login = function() {
+            // 未登录的用户需要登录
+            if (MaiDaDa.isWeixinLogin()) {
+                var uid = MaiDaDa.getTTYCUserID();
+                if (uid) {
+                    LogCol && window.LogCol.upLog();
+                    return true;
+                } else {
+                    MaiDaDa.redirectToBinding();
+                    return false;
+                }
+            } else {
+                // 登录
+                MaiDaDa.login();
+                return false;
+            }
+        };
+
+        check_user_login();
+
+        // 分页参数
+        var page_size = 20;
+        var page_index = 1;
+
+        var scroll_refresh = new IScroll("#wrapper", {
+            useTransition: true,
+        });
+
+        var map_class = function(type) {
+            type = parseInt(type, 10);
+            var result = 'baoyang';
+
+            switch (type) {
+                case 11:
+                    result = 'baoyang';
+                    break;
+                case 12:
+                    result = 'tiemo';
+                    break;
+                case 13:
+                    result = 'qimianhuli';
+                    break;
+                case 14:
+                    result = 'shenduclear';
+                    break;
+                case 15:
+                    result = 'banpen';
+                    break;
+                case 16:
+                    result = 'nianjian';
+                    break;
+                case 17:
+                    result = 'jinjing';
+                    break;
+                case 18:
+                    result = 'weizhang';
+                    break;
+                case 100:
+                    result = 'fuwu';
+                    break;
+                case 19:
+                    result = 'penqi';
+                    break;
+                case 20:
+                    result = 'shougongdan';
+                    break;
+                default:
+                    result = 'common';
+                    break;
+            }
+            return result;
+        }
+
+        // 兑换优惠券
+        var exchange = function(duihuanma) {
+            if (this.promise_exchange && this.promise_exchange.state() === 'pending') {
+                return false;
+            }
+            return this.promise_exchange = MaiDaDa.ajax({
+                type: 'get',
+                url: 'http://wx.api.maidada.cn/web/v1/pay/exchange_coupon',
+                dataType: 'jsonp',
+                data: {
+                    coupon_code: duihuanma,
+                }
+            }).done(function(response, status, xhr) {
+                if (response.code == 0) {
+                    layer.open({
+                        content: '兑换成功',
+                        btn: ['OK'],
+                        end: function() {
+                            window.location.reload();
+                            return true;
+                        }
+                    });
+                } else {
+                    layer.open({
+                        content: response.msg,
+                        btn: ['OK']
+                    });
+                    return false;
+                }
+            }).fail(function(xhr, errorType, error) {
+                layer.open({
+                    content: '网络错误（544）',
+                    btn: ['OK']
+                });
+                return false;
+            });
+        }
+
+        // 点击“兑换”按钮
+        $('#btn_duihuan').tap(function() {
+            $('#input_duihuanma').blur();
+            var duihuanma = $('#input_duihuanma').val();
+            if (!duihuanma) {
+                layer.open({
+                    content: '请填写兑换码',
+                    btn: ['OK']
+                });
+                return false;
+            }
+            exchange(duihuanma);
+        });
+
+        $('body').on('tap', '.useless_link', function(e) {
+            window.location.assign("useless.shtml");
+        });
+
+        // 没有优惠券
+        var there_is_no_coupons = function() {
+            $("#div_empty").css("display", "block");
+            $("#wrapper").hide();
+            $(".cha_btn").css("display", "block");
+        }
+
+        // 查看是否有无效的优惠券
+        var countCoupons_mode_2 = function(index, size) {
+            if (this.promise_countCoupons_mode_2 && this.promise_countCoupons_mode_2.state() === 'pending') {
+                return false;
+            }
+
+            return this.promise_countCoupons_mode_2 = MaiDaDa.ajax({
+                type: 'get',
+                url: 'http://wx.api.maidada.cn/web/v1/pay/coupons',
+                dataType: 'jsonp',
+                data: {
+                    page_index: index,
+                    page_size: size,
+                    mode: 2,
+                },
+            }).done(function(response, status, xhr) {
+                if (response.code == 0) {
+                    // 第一页，且没有优惠券
+                    if (page_index <= 1 && response.coupons.length <= 0) {
+                        // alert("mei有过期优惠券");
+                        $(".useless_link").remove();
+                    } else {
+                        // TODO 1
+                        // $("#a_bottom").addClass('useless_link');
+                        // $("#a_bottom").html('查看过期优惠券');
+                        $(".useless_link").remove();
+                    }
+                } else {
+                    // todo
+                }
+            }).fail(function(xhr, errorType, error) {
+                // todo
+            });
+        };
+
+        // 列出有效的优惠券
+        var listCoupons_mode_1 = function(index, size) {
+
+            if (this.promise_listCoupons_mode_1 && this.promise_listCoupons_mode_1.state() === 'pending') {
+                return false;
+            }
+
+            return this.promise_listCoupons_mode_1 = MaiDaDa
+                .ajax({
+                    type: 'get',
+                    url: 'http://wx.api.maidada.cn/web/v1/pay/coupons',
+                    dataType: 'jsonp',
+                    data: {
+                        page_index: index,
+                        page_size: size,
+                        mode: 1,
+                    },
+                })
+                .done(
+                    function(response, status, xhr) {
+                        if (response.code == 0) {
+
+                            // 第一页，且没有优惠券
+                            if (page_index <= 1 && response.coupons.length <= 0) {
+                                countCoupons_mode_2(1, 1);
+                                there_is_no_coupons();
+                                return false;
+                            }
+
+                            // 是否有更多的优惠券
+                            if (response.coupons.length >= page_size && response.page.has_more) {
+                                page_index++;
+                                if (!$("#a_bottom").hasClass('step_1')) {
+                                    $("#a_bottom").html('上拉加载更多...');
+                                }
+                            } else {
+                                $("#a_bottom").addClass('no_more');
+                                $("#a_bottom").html('没有更多的优惠券了');
+                                // 查看是否有过期优惠券
+                                countCoupons_mode_2(1, 1);
+                            }
+
+                            for (i in response.coupons) {
+                                var coupon = response.coupons[i];
+                                coupon.coupon_yuan = MaiDaDa
+                                    .fen2yuan(coupon.coupon_amount);
+                                coupon.class = map_class(coupon.category);
+                                var template = $('#template_coupon')
+                                    .html();
+                                var rendered = Mustache.render(
+                                    template, coupon);
+                                $('#ul_coupon').append(rendered);
+                                if (scroll_refresh) {
+                                    scroll_refresh.refresh();
+                                }
+                            }
+                        } else {
+                            layer.open({
+                                content: response.msg,
+                                btn: ['OK']
+                            });
+                            return false;
+                        }
+                    })
+                .done(
+                    function(response, status, xhr) {
+                        if ($("#a_bottom") && !$("#a_bottom").hasClass('no_more')) {
+                            $("#a_bottom").html("上拉加载更多...");
+                        }
+                    }).fail(function(xhr, errorType, error) {
+                    layer.open({
+                        content: '网络错误，请刷新重试（519）',
+                        btn: ['OK']
+                    });
+                });
+        };
+
+        if (check_user_login()) {
+            listCoupons_mode_1(page_index, page_size);
+        }
+        var interval_id;
+
+        scroll_refresh.on('scrollStart', function() {
+            if ($("#a_bottom").hasClass('no_more')) {
+                return false;
+            }
+            interval_id = setInterval(function() {
+                if (scroll_refresh.y <= (scroll_refresh.maxScrollY - 50) && !$("#a_bottom").hasClass('no_more') && !$("#a_bottom").hasClass('step_1')) {
+                    $("#a_bottom").addClass('step_1');
+                    $("#a_bottom").html("松手加载更多...");
+                }
+            }, 200);
+        });
+
+        scroll_refresh.on('scrollEnd', function() {
+            if ($("#a_bottom").hasClass('no_more')) {
+                return false;
+            }
+            if (interval_id) {
+                clearInterval(interval_id);
+            }
+            if ($("#a_bottom").hasClass('step_1')) {
+                $("#a_bottom").removeClass('step_1');
+                listCoupons_mode_1(page_index, page_size);
+                $("#a_bottom").html("加载中...");
+            } else {
+                $("#a_bottom").html("上拉加载更多...");
+            }
+        });
+
+        scroll_refresh.on('beforeScrollStart', function() {
+            if (interval_id) {
+                clearInterval(interval_id);
+            }
+        });
+
+        scroll_refresh.on('scrollCancel', function() {
+            if (interval_id) {
+                clearInterval(interval_id);
+            }
+        });
+
+        scroll_refresh.on('flick', function() {
+            if (interval_id) {
+                clearInterval(interval_id);
+            }
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, false);
+    </script>
+
+</body>
+
+</html>

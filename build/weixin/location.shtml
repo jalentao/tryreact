@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <!--#include virtual="/sinclude/common/weixin/weixin_dns_prefetch.shtml" -->
+
+    <title>车辆位置</title>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_oneapm_js.shtml" -->
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_css.shtml" -->
+    <link href="http://www.maidada.cn/static/weixin/css/order.css" rel="stylesheet" type="text/css" />
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=yE3ygyp7iCsuMkltS1rcxk2Z" type="text/javascript"></script>
+</head>
+
+<body>
+
+    <div id="map" style="width:100%;  position: absolute ;top: 0;bottom:0;"></div>
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_js.shtml" -->
+    <script>
+        $('#map').css("position", "absolute");
+        var paramsStr = decodeURI(window.location.hash.replace("#", ""));
+        var paramsJson = $.parseJSON(paramsStr);
+        var map = new BMap.Map("map"); // 创建Map实例
+        var current = new BMap.Point(paramsJson.current.lon, paramsJson.current.lat);
+        var start = new BMap.Point(paramsJson.start.lon, paramsJson.start.lat);
+        var end = new BMap.Point(paramsJson.end.lon, paramsJson.end.lat);
+
+        var points = [current, start, end];
+        var view = map.getViewport(eval(points));
+        map.centerAndZoom(view.center, view.zoom); //自适应缩放级别
+        map.enableScrollWheelZoom(true);
+        //向地图中添加缩放控件
+        var ctrlNav = new window.BMap.NavigationControl({
+            anchor: BMAP_ANCHOR_TOP_LEFT,
+            type: BMAP_NAVIGATION_CONTROL_LARGE
+        });
+        map.addControl(ctrlNav);
+
+        //向地图中添加缩略图控件
+        var ctrlOve = new window.BMap.OverviewMapControl({
+            anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+            isOpen: 1
+        });
+        map.addControl(ctrlOve);
+
+        //向地图中添加比例尺控件
+        var ctrlSca = new window.BMap.ScaleControl({
+            anchor: BMAP_ANCHOR_BOTTOM_LEFT
+        });
+        map.addControl(ctrlSca);
+
+        var start_img = new BMap.Icon("http://media.ttyongche.com/mapcar_location_start1.png", new BMap.Size(20, 24));
+        var current_img = new BMap.Icon("http://media.ttyongche.com/mapcar1.png", new BMap.Size(20, 36));
+        var end_img = new BMap.Icon("http://media.ttyongche.com/mapcar_location_end1.png", new BMap.Size(20, 24));
+        displayLocation(paramsJson.current, current_img);
+        displayLocation(paramsJson.start, start_img);
+        displayLocation(paramsJson.end, end_img);
+
+        function displayLocation(loc, img) {
+            var point = new window.BMap.Point(loc.lon, loc.lat); //坐标点
+            var marker = new window.BMap.Marker(point, {
+                icon: img
+            }); //按照地图点坐标生成标记
+            if ("name" in loc) {
+                var label = new window.BMap.Label(loc.name, {
+                    offset: new window.BMap.Size(10, -8)
+                });
+                label.setStyle({
+                    color: "red",
+                    border: "0"
+                });
+                label.addEventListener('click', function onClick() {
+                    window.location.href = loc.url;
+                });
+                marker.setLabel(label);
+            }
+            map.addOverlay(marker);
+        }
+    </script>
+</body>
+
+</html>

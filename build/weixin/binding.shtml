@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <!--#include virtual="/sinclude/common/weixin/weixin_dns_prefetch.shtml" -->
+
+    <title>怎么联系您 - 麦大大管家</title>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_oneapm_js.shtml" -->
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_css.shtml" -->
+    <style type="text/css">
+        @media screen and (max-width:480px) {
+            body {
+                font-size: 10px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:481px) and (max-width:640px) {
+            body {
+                font-size: 15px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:641px) and (max-width:720px) {
+            body {
+                font-size: 20px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:721px) {
+            body {
+                font-size: 22.5px;
+                -webkit-text-size-adjust: none;
+            }
+            input {
+                font-size: 22.5px;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        input::-webkit-input-placeholder {
+            /* WebKit browsers */
+            color: #d7d7d7;
+        }
+
+        input:-moz-placeholder {
+            /* Mozilla Firefox 4 to 18 */
+            color: #d7d7d7;
+        }
+
+        input::-moz-placeholder {
+            /* Mozilla Firefox 19+ */
+            color: #d7d7d7;
+        }
+
+        input:-ms-input-placeholder {
+            /* Internet Explorer 10+ */
+            color: #d7d7d7;
+        }
+
+        body {
+            background: #eceded;
+            font-family: Microsoft Yahei;
+        }
+
+        ul,
+        ol {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        button {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        input,
+        button {
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            outline: none;
+        }
+
+        .wrap {
+            width: 100%;
+            color: #333;
+        }
+
+        .selectBrand {
+            height: 4rem;
+            line-height: 4rem;
+            padding: 0 4.6875%;
+            background: #fff url(http://www.maidada.cn/static/weixin/img/next.png) no-repeat 95% center;
+            background-size: 1.4rem 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .brandbox {
+            color: #333;
+        }
+
+        .brand {
+            display: inline-block;
+            width: 52%;
+            height: 3rem;
+            color: #333;
+            padding: 0 1rem;
+            font-size: 1rem;
+        }
+
+        .tip {
+            height: 2.4rem;
+            line-height: 2.4rem;
+            padding: 0 4.6875%;
+            color: #999;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .infobox {
+            padding: 0 4.6875%;
+            background: #fff;
+        }
+
+        .line {
+            border-bottom: 1px solid #efefef;
+        }
+
+        .infolist {
+            height: 4rem;
+            line-height: 4rem;
+            font-size: 1.2rem;
+        }
+
+        .txt,
+        .yzm {
+            height: 90%;
+            font-size: 1.1rem;
+        }
+
+        .txt {
+            width: 72%;
+            padding: 0 0.5rem;
+        }
+
+        .yzm {
+            width: 38%;
+            padding: 0 0.3rem 0 0.5rem;
+        }
+
+        .yzmbtn {
+            width: 35%;
+            height: 2.6rem;
+            background: #8c8c8e;
+            font-size: 1.1rem;
+            color: #fff;
+            border-radius: 0.2rem;
+            float: right;
+            margin-top: 0.7rem;
+        }
+
+        .nextbox {
+            display: block;
+            width: 90.625%;
+            height: 3rem;
+            margin: 0 4.6875%;
+            position: relative;
+            bottom: -0.5rem;
+        }
+
+        .nextbtn {
+            display: block;
+            width: 100%;
+            height: 100%;
+            font-size: 1.2rem;
+            color: #fff;
+            border-radius: 0.2rem;
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(#32313d), to(#22222c));
+            background: -moz-linear-gradient(top, #32313d, #22222c);
+            filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#32313d', endColorstr='#22222c');
+            /* IE6,IE7 */
+            -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#32313d', endColorstr='#22222c')";
+            /* IE8 */
+        }
+
+        .shdow {
+            box-shadow: 0 0.2rem 5px #e2e3e3;
+            -webkit-box-shadow: 0 0.2rem 5px #e2e3e3;
+        }
+
+        .waring,
+        .waring_yzm {
+            color: red;
+            font-size: 1rem;
+            padding-left: 4.6875%;
+            display: none;
+        }
+
+        .zhezhao {
+            background: rgba(0, 0, 0, .7);
+            background-size: cover;
+            position: absolute;
+            top: 0px;
+            width: 100%;
+        }
+
+        .zhezhao2 {
+            background: rgba(0, 0, 0, .7);
+            background-size: cover;
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            height: 1600px;
+        }
+
+        .zhezhao3 {
+            background: rgba(0, 0, 0, .7);
+            background-size: cover;
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            height: 1600px;
+        }
+
+        .carbrand1 {
+            padding: 1.2rem 4.6875% 0;
+        }
+
+        .carbrand1 li {
+            height: 3rem;
+            border: 1px solid #ccc;
+            margin-bottom: 1rem;
+            line-height: 3rem;
+            font-size: 1.2rem;
+            padding-left: 1rem;
+            color: #333;
+            border-radius: 0.2rem;
+            background: #fff;
+            background-size: 2rem 2rem;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        .carbrand2 {
+            padding: 1.2rem 12.6875% 0;
+        }
+
+        .carbrand2 li {
+            height: 3rem;
+            border: 1px solid #ccc;
+            margin-bottom: 1rem;
+            line-height: 3rem;
+            font-size: 1.2rem;
+            padding-left: 1rem;
+            color: #333;
+            border-radius: 0.2rem;
+            /*background:#fff url(img/wxz@3x.png) no-repeat 95% center;*/
+            background: #fff;
+            background-size: 2rem 2rem;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        .carbrand3 {
+            padding: 1.2rem 12.6875% 0;
+        }
+
+        .carbrand3 li {
+            height: 3rem;
+            border: 1px solid #ccc;
+            margin-bottom: 1rem;
+            line-height: 3rem;
+            font-size: 0.7rem;
+            padding-left: 1rem;
+            color: #333;
+            border-radius: 0.2rem;
+            background: #fff url(img/wxz@3x.png) no-repeat 95% center;
+            background: #fff;
+            background-size: 2rem 2rem;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        .carbrand1 .select {
+            /*background:#fff url(img/yxz@3x.png) no-repeat 95% center;*/
+            background-size: 2rem 2rem;
+        }
+
+        .carbrand2 .select {
+            /*background:#fff url(img/yxz@3x.png) no-repeat 95% center;*/
+            background-size: 2rem 2rem;
+        }
+
+        .carbrand3 .select {
+            background: #fff url(img/yxz@3x.png) no-repeat 95% center;
+            background-size: 2rem 2rem;
+        }
+
+        .brand_input {
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap_body" class="wrap" style="display:none;">
+        <div class="selectBrand shdow" id="div_band_select">
+            车辆品牌
+            <input type="txt" readonly="readonly" placeholder="请选择车辆品牌" class="brand" id="input_brand" data-band_id="" />
+        </div>
+        <p class="tip">管家将通过此手机号联系您，为您服务</p>
+        <div class="infobox shdow">
+            <div class="infolist">
+                <label for="tel">手机号</label>
+                <input type="tel" name="tel" class="txt" id="input_mobile" maxlength="11" />
+            </div>
+            <div class="line"></div>
+            <div class="infolist">
+                <label for="yzm">验证码</label>
+                <input type="tel" name="yzm" class="yzm" tel="yzm" id="input_yzm" maxlength="4" />
+                <button type="button" class="yzmbtn" id="btn_yzm" stat-info="">获取验证码</button>
+            </div>
+        </div>
+        <span class="waring">手机号输入有误</span>
+        <span class="waring_yzm">验证码输入有误</span>
+        <p class="tip">管家将电话联系您确认需求</p>
+        <a href="javascript:void(0)" class="nextbox">
+            <button type="button" class="nextbtn" id="btn_login">提交</button>
+        </a>
+    </div>
+    <div class="zhezhao" style="display:none;" id="div_band">
+        <ul class="carbrand1" id="ul_band">
+            <script id="template_band_list" type="x-tmpl-mustache">
+                {{#results}}
+                <li class="zll" data-brand_id="{{brand_id}}">{{brand}}</li>
+                {{/results}}
+            </script>
+        </ul>
+    </div>
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_js.shtml" -->
+    <script type="text/javascript">
+        $(function() {
+            // 验证手机号码
+            var check_mobile = function(mobile) {
+                var reg = /^1[34578]\d{9}$/;
+                if (reg.test(mobile)) {
+                    return true;
+                } else {
+                    return false;
+                };
+            };
+
+            // 未登录的用户需要登录
+            if (MaiDaDa.isWeixinLogin()) {
+                var uid = MaiDaDa.getTTYCUserID();
+                if (uid) {
+                    var rurl = MaiDaDa.getParameter("rurl");
+                    if (rurl) {
+                        window.location.assign(rurl);
+                        return false;
+                    } else {
+                        MaiDaDa.redirectToWeixinIndex();
+                        return false;
+                    }
+                } else {
+                    $("#wrap_body").show();
+                    LogCol && window.LogCol.upLog();
+                }
+            } else {
+                // 登录
+                MaiDaDa.login();
+                return false;
+            }
+
+            // MaiDaDa.listCarBrand 的回调方法
+            var list_car_brand_callback = function(brand_list, status) {
+                if (status === true) {
+                    var template = $('#template_band_list').html();
+                    var rendered = Mustache.render(template, {
+                        results: brand_list
+                    });
+                    $('#ul_band').html(rendered);
+                } else {
+                    // layer.open({
+                    //     content: MaiDaDa.getErrorMessage(),
+                    //     btn: ['OK']
+                    // });
+                    return false;
+                }
+            };
+
+            MaiDaDa.listCarBrand(list_car_brand_callback);
+
+            // 滚动到页面顶端
+            (function($) {
+                $.extend($.fn, {
+                    scrollTo: function(m) {
+                        var n = 0,
+                            timer = null,
+                            that = this;
+                        var smoothScroll = function(m) {
+                            var per = Math.round(m / 50);
+                            n = n + per;
+                            if (n > m) {
+                                window.clearInterval(timer);
+                                return false;
+                            }
+                            that.scrollTop(n);
+                        };
+
+                        timer = window.setInterval(function() {
+                            smoothScroll(m);
+                        }, 20);
+                    }
+                })
+            })(Zepto);
+
+            // 激活发送验证码按钮
+            $('#input_mobile').on('keyup', function() {
+                if (check_mobile($('#input_mobile').val())) {
+                    $('#btn_yzm').css('background', '#FF8000');
+                    // zhugeio_start
+                    var stat_info = {
+                        event: "点击获取验证码按钮",
+                        info: {
+                            "手机号": $('#input_mobile').val(),
+                            "车品牌": $("#input_brand").val(),
+                        }
+                    };
+                    $('#btn_yzm').attr('stat-info', JSON.stringify(stat_info));
+                    // zhugeio_end
+                } else {
+                    countdown_return_to_normal();
+                }
+            });
+
+            // 验证码到4位
+            $('#input_yzm').on('keyup', function() {
+                if ($('#input_yzm').val().length == 4) {
+                    $(this).trigger("blur");
+                }
+            });
+
+            var countdown_num = time_offset;
+            var countdown_timer = null;
+            var brand_id = 0;
+            var time_offset = 60;
+
+            // 倒计时初始化
+            var countdown_return_to_normal = function() {
+                countdown_num = time_offset;
+                clearInterval(countdown_timer);
+                countdown_timer = null;
+                $("#btn_yzm").html("获取验证码");
+                $('#btn_yzm').css('background', '#8c8c8e');
+            };
+
+            // 按钮倒计时
+            var countdown = function() {
+                if (!countdown_timer) {
+                    var _this = countdown;
+                    countdown_timer = setInterval(function() {
+                        _this();
+                    }, 1000);
+                }
+                if (countdown_num > 0) {
+                    $("#btn_yzm").html(countdown_num + "s");
+                    countdown_num--;
+                } else {
+                    countdown_return_to_normal();
+                }
+            };
+
+            // 发送验证码的回调函数
+            var send_seccode_callback = function(mobile, response, status) {
+                if (status === false) {
+                    if (countdown_num == time_offset) {
+                        countdown_return_to_normal();
+                    }
+                    layer.open({
+                        content: MaiDaDa.getErrorMessage(),
+                        btn: ['OK']
+                    });
+                    return false;
+                } else {
+                    layer.open({
+                        content: response.tip,
+                        style: 'background-color:#5cb85c; color:#fff; border:none;',
+                        time: 2
+                    });
+                }
+            };
+
+            // 发送验证码
+            $('#btn_yzm').tap(function() {
+
+                if (!check_mobile($('#input_mobile').val())) {
+                    layer.open({
+                        content: '请填写手机号码',
+                        btn: ['OK']
+                    });
+                    return false;
+                }
+
+                // 开始倒计时
+                countdown();
+
+                MaiDaDa.sendSeccode($('#input_mobile').val(), send_seccode_callback);
+            });
+
+            // 品牌接口
+            $('#ul_band').on('tap', "li", function() {
+                brand_id = $(this).attr("data-brand_id");
+                $("#input_brand").val($(this).html());
+                $('html, body').scrollTop(0);
+                $("#div_band").hide();
+            });
+
+            // 绑定用户的回调函数
+            var binding_user_callback = function(response, status) {
+                if (status === false) {
+                    LogCol && window.LogCol.event({
+                        "event": "登录失败",
+                        "info": {
+                            "手机号": $('#input_mobile').val(),
+                            "车品牌": $("#input_brand").val(),
+                            "失败原因": MaiDaDa.getErrorMessage(),
+                        }
+                    },true);
+                    layer.open({
+                        content: MaiDaDa.getErrorMessage(),
+                        btn: ['OK']
+                    });
+                    return false;
+                } else {
+                    LogCol && window.LogCol.event({
+                        "event": "登录成功",
+                        "info": {
+                            "手机号": $('#input_mobile').val(),
+                            "车品牌": $("#input_brand").val(),
+                        }
+                    });
+                    var rurl = MaiDaDa.getParameter("rurl");
+                    if (rurl) {
+                        window.location.assign(rurl);
+                        return true;
+                    } else {
+                        MaiDaDa.redirectToWeixinIndex();
+                        return false;
+                    }
+                }
+            };
+
+            // 提交
+            $('#btn_login').tap(function() {
+                var mobile = $('#input_mobile').val();
+                var yzm = $('#input_yzm').val();
+                if (!check_mobile(mobile)) {
+                    layer.open({
+                        content: '手机号码格式不正确',
+                        btn: ['OK']
+                    });
+                    return false;
+                }
+                if (!brand_id) {
+                    layer.open({
+                        content: '请选择车辆品牌',
+                        btn: ['OK']
+                    });
+                    return false;
+                }
+                if (!yzm) {
+                    layer.open({
+                        content: '验证码不正确',
+                        btn: ['OK']
+                    });
+                    return false;
+                }
+
+                MaiDaDa.bindingUser({
+                    mobile: mobile,
+                    code: yzm
+                }, binding_user_callback);
+            });
+
+            // 点击显示品牌列表
+            $('#div_band_select').tap(function() {
+                $('#input_brand').blur();
+                $("#div_band").show();
+            });
+        });
+    </script>
+</body>
+
+</html>

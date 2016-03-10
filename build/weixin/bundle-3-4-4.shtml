@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <!--#include virtual="/sinclude/common/weixin/weixin_dns_prefetch.shtml" -->
+
+    <title>麦大大管家</title>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_oneapm_js.shtml" -->
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_css.shtml" -->
+    <link href="http://www.maidada.cn/static/weixin/css/coupons/style.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        body {
+            background: url("http://www.maidada.cn/static/weixin/img/coupons/bg_01.jpg") no-repeat;
+            background-size: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>仅限老用户购买</h1>
+        <div class="box">
+            <input type="text" name="tel" pattern="\d*" class="tel" placeholder="请输入手机号" id="input_mobile" maxlength='11'/>
+            <p class="tel_err_msg">手机号码错误</p>
+        </div>
+        <div class="box">
+            <input type="text" name="yzm" pattern="\d*" class="yzm" placeholder="请输入验证码" id="input_code" maxlength='4'/>
+            <button type="button" name="yzm_btn" class="yzm_btn" id="button_code">获取验证码</button>
+            <div class="clearfix"></div>
+            <p class="yzm_err_msg">验证码错误</p>
+        </div>
+        <div class="box">
+            <button type="button" name="purchase" class="purchase" id="button_purchase">购买</button>
+        </div>
+        <div class="box">
+            <p class="sucess_txt">支付成功后，系统自动将福利发至您的账户</p>
+        </div>
+    </div>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_js.shtml" -->
+    <script type="text/javascript">
+        $(function() {
+            // 未登录的用户需要登录
+            if (MaiDaDa.isWeixinLogin()) {
+                // do nothing
+            } else {
+                // 登录
+                MaiDaDa.login();
+                return false;
+            }
+
+            var activity_id = 3;
+            var channel_id = 4;
+            var package_id = 4;
+
+            // 套餐名称
+            var bundle_name = '';
+
+            // 公众号支付配置信息
+            var jsapi_pay_config = {};
+
+            // 得到套餐的详细信息
+            function getBundleInfo(activity_id, channel_id)
+            {
+                MaiDaDa.ajax({
+                    url: "http://wx.api.maidada.cn/web/v1/coupon/coupon_packages_list",
+                    type: 'get',
+                    data: {
+                        activity_id: activity_id,
+                        channel_id: channel_id,
+                    },
+                    dataType: 'jsonp',
+                    mimeType: 'application/javascript',
+                    success: function(response) {
+                        if (response.packages[0].name) {
+                            bundle_name = response.packages[0].name;
+                        }
+                    }
+                });
+            }
+            getBundleInfo(activity_id, channel_id);
+
+            // 验证手机号码
+            var validate_mobile = function(data) {
+                var reg = /^1[34578]\d{9}$/;
+                if (reg.test(data)) {
+                    return true;
+                } else {
+                    return false;
+                };
+            };
+
+            // 调用微信公众号支付
+            var call_jsapi_pay = function() {
+                WeixinJSBridge.invoke('getBrandWCPayRequest', jsapi_pay_config,
+                    function(res) {
+                        $("#button_purchase").html('微信支付');
+                        if (res.err_msg == "get_brand_wcpay_request:ok") {
+                            // TODO
+                            layer.open({
+                                content: "购买成功，福利已发至您的账户",
+                                btn: ['OK']
+                            });
+                            // window.location.assign('coupons.shtml');
+                        } else {
+                            if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                                layer.open({
+                                    content: "您已经取消支付",
+                                    btn: ['OK']
+                                });
+                                return false;
+                            }
+                            if (res.err_desc) {
+                                layer.open({
+                                    content: res.err_desc,
+                                    btn: ['OK']
+                                });
+                            }
+                        }
+                    }
+                );
+            };
+
+            //
+            function purchase()
+            {
+                var user_info_token = '';
+
+                MaiDaDa.ajax({
+                    url: "http://wx.api.comm.maidada.cn/web/v1/weixin/bundle_token",
+                    type: 'get',
+                    data: {
+                        mobile: $("#input_mobile").val(),
+                        code: $("#input_code").val(),
+                    },
+                    dataType: 'jsonp',
+                    mimeType: 'application/javascript',
+                    success: function(response) {
+                        if (response.token) {
+                            user_info_token = response.token;
+
+                            MaiDaDa.ajax({
+                                url: "http://wx.api.maidada.cn/web/v1/coupon/purchase",
+                                type: 'get',
+                                data: {
+                                    activity_id: activity_id,
+                                    channel_id: channel_id,
+                                    package_id: package_id,
+                                    user_info_token: user_info_token,
+                                },
+                                dataType: 'jsonp',
+                                mimeType: 'application/javascript',
+                                success: function(response) {
+                                    if (!response.weipay) {
+                                        if (response.msg == '已购买') {
+                                            layer.open({
+                                                content: "您已经购买过该活动下的优惠套餐！<br/>微信关注公众号“麦大大管家”，更多活动等您参加",
+                                                btn: ['朕知道了']
+                                            });
+                                            $("#input_mobile").val('');
+                                            $("#input_code").val('');
+                                            return false;
+                                        }
+                                        layer.open({
+                                            content: response.msg,
+                                            btn: ['OK']
+                                        });
+                                        return false;
+                                    }
+                                    // 将参数转换
+                                    jsapi_pay_config.appId = response.weipay.app_id;
+                                    jsapi_pay_config.timeStamp = response.weipay.time_stamp;
+                                    jsapi_pay_config.nonceStr = response.weipay.nonce_str;
+                                    jsapi_pay_config.package = response.weipay.package_value;
+                                    jsapi_pay_config.signType = response.weipay.sign_type;
+                                    jsapi_pay_config.paySign = response.weipay.sign;
+
+                                    if (typeof WeixinJSBridge == "undefined") {
+                                        if (document.addEventListener) {
+                                            document.addEventListener('WeixinJSBridgeReady', call_jsapi_pay, false);
+                                        } else if (document.attachEvent) {
+                                            document.attachEvent('WeixinJSBridgeReady', call_jsapi_pay);
+                                            document.attachEvent('onWeixinJSBridgeReady', call_jsapi_pay);
+                                        }
+                                    } else {
+                                        call_jsapi_pay();
+                                    }
+                                },
+                                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                    layer.open({
+                                        content: "网络错误，请重试（184）",
+                                        btn: ['OK']
+                                    });
+                                    return false;
+                                }
+                            });
+                        }
+                        else {
+                            layer.open({
+                                content: response.msg,
+                                btn: ['OK']
+                            });
+                            return false;
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        layer.open({
+                            content: "网络错误，请重试（484）",
+                            btn: ['OK']
+                        });
+                        return false;
+                    }
+                });
+            }
+
+            var countdown_timer;
+            var countdown_offset = 60;
+            var countdown_num = countdown_offset;
+
+            // 倒计时 - 结束
+            var stop_countdown = function() {
+                countdown_num = countdown_offset;
+                clearInterval(countdown_timer);
+                countdown_timer = null;
+                $("#button_code").html("获取验证码").removeClass('grey');
+            };
+
+            // 倒计时 - 开始
+            var start_countdown = function() {
+                if (!countdown_timer) {
+                    var _this = start_countdown;
+                    countdown_timer = setInterval(function() {
+                        _this();
+                    }, 1000);
+                }
+                if (countdown_num > 0) {
+                    $("#button_code").html(countdown_num + "s").addClass('grey');
+                    countdown_num--;
+                } else {
+                    stop_countdown();
+                }
+            };
+
+            // 购买按钮点击事件
+            $("#button_purchase").on('tap', function(e) {
+
+                if (!validate_mobile($("#input_mobile").val())) {
+                    layer.open({
+                        content: "手机号码错误!",
+                        btn: ['OK']
+                    });
+                    return false;
+                }
+
+                if ($("#input_code").val().length !== 4) {
+                    layer.open({
+                        content: "验证码错误!",
+                        btn: ['OK']
+                    });
+                    return false;
+                }
+
+                purchase();
+            });
+
+            // 发送验证码的回调函数
+            var send_seccode_callback = function(mobile, response, status) {
+                if (status === false) {
+                    layer.open({
+                        content: MaiDaDa.getErrorMessage(),
+                        btn: ['OK']
+                    });
+                    return false;
+                } else {
+                    layer.open({
+                        content: response.tip,
+                        time: 2
+                    });
+                }
+            };
+
+            // 验证码按钮点击事件
+            $("#button_code").on('tap', function(e) {
+                if (!validate_mobile($("#input_mobile").val())) {
+                    layer.open({
+                        content: "手机号码填写错误",
+                        btn: ['OK']
+                    });
+                    return false;
+                }
+
+                // 开始倒计时
+                if (countdown_num == countdown_offset) {
+                    start_countdown();
+                }
+
+                MaiDaDa.sendSeccode($('#input_mobile').val(), send_seccode_callback);
+            });
+
+        });
+    </script>
+</body>
+</html>

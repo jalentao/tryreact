@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <!--#include virtual="/sinclude/common/weixin/weixin_dns_prefetch.shtml" -->
+
+    <title>呼叫管家 - 麦大大管家</title>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_oneapm_js.shtml" -->
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_css.shtml" -->
+    <link href="http://www.maidada.cn/static/weixin/css/order.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="guanjia" id="guanjia_title" style="display:none;">
+        <p class="title">最近为您服务过的管家</p>
+        <ul class="hj-listbox"></ul>
+    </div>
+
+    <script id="guanjia_list_template" type="x-tmpl-mustache">
+        <li class="hj-list">
+            <a href="make.shtml?advisor={{advisor.id}}&type=20">
+                <div class="content">
+                    <div class="con-img">
+                        <img src="{{advisor.headimg}}" />
+                    </div>
+                    <div class="con-text">
+                        <p class="name">{{advisor.name}}</p>
+                        <p class="description">最近服务项目</p>
+                        <p class="project">{{order.type_name}}</p>
+                        <p class="date">{{order.create_time}}</p>
+                    </div>
+                </div>
+            </a>
+        </li>
+    </script>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_js.shtml" -->
+    <script type="text/javascript">
+        $(function() {
+            // 未登录的用户需要登录
+            if (MaiDaDa.isWeixinLogin()) {
+                var uid = MaiDaDa.getTTYCUserID();
+                if (uid) {} else {
+                    MaiDaDa.redirectToBinding();
+                    return false;
+                }
+            } else {
+                // 登录
+                MaiDaDa.login();
+                return false;
+            }
+
+            LogCol && window.LogCol.upLog();
+
+            MaiDaDa.ajax({
+                url: "http://wx.api.maidada.cn/web/v1/order/serviced_advisors",
+                type: 'get',
+                dataType: 'jsonp',
+                mimeType: 'application/javascript',
+                success: function(data) {
+                    if (data.advisors.length == 0) {
+                        $("body").html('<div class="no-guanjia"><p class="no-gj">完成首次服务体验才可以直接呼叫管家。</p><a href="services.shtml" class="no-gj-box"><button type="button" class="no-gj-btn">立即体验</button></a></div>');
+                    } else {
+                        $("#guanjia_title").show();
+                        for (var item in data.advisors) {
+                            item = data.advisors[item];
+                            if (!item.advisor.headimg) {
+                                item.advisor.headimg = 'http://www.maidada.cn/static/weixin/img/sy_per.png'
+                            }
+                            item.order.create_time = moment.unix(item.order.create_time).format('MM-DD');
+                            $('.hj-listbox').append(Mustache.render($('#guanjia_list_template').html(), item));
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <!--#include virtual="/sinclude/common/weixin/weixin_dns_prefetch.shtml" -->
+
+    <title>什么是麦大大管家</title>
+
+    <!--#include virtual="/sinclude/common/weixin/weixin_oneapm_js.shtml" -->
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_css.shtml" -->
+    <style>
+        @media screen and (max-width:480px) {
+            body {
+                font-size: 10px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:481px) and (max-width:640px) {
+            body {
+                font-size: 15px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:641px) and (max-width:720px) {
+            body {
+                font-size: 20px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        @media screen and (min-width:721px) {
+            body {
+                font-size: 22.5px;
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #fff;
+        }
+
+        .wrap {
+            width: 100%;
+        }
+
+        .wrap img {
+            display: block;
+            border: 0;
+        }
+
+        .box {
+            width: 90.625%;
+            padding: 1.5rem 0;
+            border-bottom: 1px dashed #e8d9ba;
+            margin: 0 4.6875%;
+        }
+
+        .box:first-child {
+            padding-top: 2rem;
+        }
+
+        .box h1 {
+            color: #c19e55;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .box p {
+            color: #333;
+            font-size: 0.9rem;
+            line-height: 1.3rem;
+        }
+
+        .box ul {
+            list-style: circle inside url('http://media.ttyongche.com/20160123%2F20160123_circle.png');
+        }
+
+        .box ul li {
+            color: #333;
+            font-size: 0.9rem;
+            line-height: 1.3rem;
+        }
+
+        .box_p {
+            margin-top: 1rem;
+        }
+
+        .box .qa {}
+
+        .box .qa li {
+            color: #333;
+            list-style: none;
+            line-height: 1.4rem;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+            padding-left: 1.4rem;
+            background: url('http://media.ttyongche.com/20160222%2F20160224_Q.png') no-repeat left 2px;
+            background-size: 1rem 1rem;
+        }
+
+        .qa li:nth-child(2n) {
+            color: #999;
+            margin-bottom: 1rem;
+            background: url('http://media.ttyongche.com/20160222%2F20160224_A.png') no-repeat left 2px;
+            background-size: 1rem 1rem;
+        }
+
+        .qa li:last-child {
+            margin-bottom: 0rem;
+        }
+
+        .cha {
+            display: block;
+            height: 3rem;
+            line-height: 3rem;
+            width: 90.625%;
+            font-size: 1.2rem;
+            color: #fff;
+            border-radius: 0.3rem;
+            text-align: center;
+            background: #c19e55;
+            text-decoration: none;
+            margin: 1.5rem auto;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .imgbox {
+            width: 90.625%;
+            padding: 1.5rem 4.6875% 1rem;
+            background: #f6f0e4;
+        }
+
+        .imgbox p {
+            color: #333;
+            font-size: 0.8rem;
+            line-height: 1.3rem;
+        }
+
+        .imgbox p:nth-of-type(1) {
+            letter-spacing: -0.5px;
+        }
+
+        .imgbox p:nth-of-type(2) {
+            color: #999;
+            margin-top: 0.5rem;
+        }
+
+        .imgbox p:nth-of-type(4) {
+            text-align: center;
+        }
+
+        .qr {
+            width: 60%;
+            margin: 2rem auto 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <img src="http://media.ttyongche.com/20160123%2F20160123_banner.jpg" width="100%" />
+        <div class="box">
+            <h1>什么是麦大大管家？</h1>
+            <p>甄选靠谱服务商(4S 店、精品店)，为车主提供一对一私人管家服务，一站式解决所有用车养车需求。</p>
+        </div>
+        <div class="box">
+            <h1>我为什么要用麦大大管家？</h1>
+            <ul>
+                <li>为您提供专业的养车用车建议。</li>
+                <li>提供上门接送车服务，节省您的时间。</li>
+                <li>现场把关服务质量，杜绝偷工减料。</li>
+                <li>现场评估服务增项，避免无谓消费。</li>
+            </ul>
+            <p class="box_p">以保养为例：</p>
+            <ul>
+                <li>只去4S店做保养，甚至是您指定的4S店。</li>
+                <li>比您自己去便宜 10% ~ 15%。</li>
+                <li>不用您自己去，为您节省 4 ~ 5 个小时。</li>
+            </ul>
+        </div>
+        <div class="box">
+            <h1>常见问题</h1>
+            <ul class="qa">
+                <li>用一次多少钱？</li>
+                <li>管家服务费：88 元，首次使用免服务费。
+                    <br/>项目费用：预约时管家根据您的具体车况报价，认可后才下单，整体上比您自己去便宜约 10% ~ 15%。</li>
+                <li>多久能还车？</li>
+                <li>接送车 + 店内养护的时间一般在 4 ~ 5 小时左右，这些都是为您节省下来的自由时间。</li>
+                <li>车交给你们，我能放心吗？</li>
+                <li>每个管家都拥有 3 年以上实际驾龄和汽车技术知识；且经过 200 小时以上培训才能入职。服务全程可用手机监控，并由太平洋保险公司承保，平台承担所有交易问题。</li>
+                <li>怎么付款？</li>
+                <li>还车时，您验收满意后，可通过麦大大 APP 或微信服务号付款，支持微信、支付宝、网银支付。</li>
+            </ul>
+        </div>
+        <a href="http://www.maidada.cn/weixin/services.shtml" class="cha">查看服务</a>
+        <div class="imgbox">
+            <p>麦大大管家由创新工场、红杉资本、百度共同投资。</p>
+            <p>目前为北京地区以下品牌车主提供服务：</p>
+            <p>奥迪、宝马、奔驰、路虎、捷豹、沃尔沃、雷克萨斯、英菲尼迪、Jeep、克莱斯勒、道奇、DS。</p>
+            <img src="http://media.ttyongche.com/20160123%2F20160123_qr.jpg" width="100%" class="qr" />
+            <p>麦大大管家</p>
+        </div>
+    </div>
+    <!--#include virtual="/sinclude/common/weixin/weixin_common_js.shtml" -->
+    <script type="text/javascript">
+        LogCol && window.LogCol.upLog();
+    </script>
+</body>
+
+</html>

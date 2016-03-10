@@ -17,35 +17,13 @@ export default class TabBar extends React.Component {
         defaultValue: ''
     }
 
-    state = {
-        tabs: []
+    onChange = (value) => {
+        this.props.onChange(value)
     }
 
-    componentDidMount() {
-        const defaultValue = this.props.defaultValue;
-        let tabs = this.props.tabs.map(function (item, key) {
-            item.active = defaultValue === item.value ? true : false
-            return item
-        })
-        this.setState({
-            tabs: tabs
-        })
-    }
-
-    onChange(tab) {
-        let tabs = this.state.tabs.map(function (item, key) {
-            item.active = item.value === tab.value ? true : false
-            return item
-        })
-        this.setState({
-            tabs: tabs
-        })
-        this.props.onChange(tab)
-    }
-
-    renderTabs() {
-        return this.state.tabs.map(function (item, key) {
-            return <Tab key={key} tab={item} onChoose={this.onChange}/>
+    renderTabs = () => {
+        return this.props.tabs.map(function (item, key) {
+            return <Tab key={key} text={item.text} img={item.img} activeImg={item.activeImg} value={item.value} active={item.active} onChoose={this.onChange}/>
         }.bind(this))
     }
 

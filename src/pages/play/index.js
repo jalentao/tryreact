@@ -20,17 +20,6 @@ class PlayPage extends React.Component {
     }
 
     render() {
-        var re = new RegExp("(http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?", "gi");
-        var str ="辅导费http://www.baidu.com死神";
-        var url = str.match(re)[0];
-        var end = str.indexOf(url);
-        var left = str.slice(0, end);
-        var right = str.slice(end+url.length);
-        console.log([
-            left,
-            url,
-            right
-        ]);
 
         let {plays} = this.props
         plays.push(plays[0])

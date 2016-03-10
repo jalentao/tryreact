@@ -6,16 +6,18 @@
 
 import React from 'react';
 import {Page, Header} from '../../lib/react-weui'
+import BottomNav from '../../components/bottomNav'
 
 import './index.less';
 
-export default class Welfare extends React.Component {
+export default class WelfarePage extends React.Component {
 
     state = {}
 
     render() {
         return (
             <Page className="welfare">
+                <BottomNav/>
             </Page>
         )
     }

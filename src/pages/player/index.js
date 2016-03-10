@@ -7,15 +7,17 @@
 import React from 'react';
 import {Page, Header} from '../../lib/react-weui'
 
+import BottomNav from '../../components/bottomNav'
 import './index.less';
 
-export default class Butler extends React.Component {
+export default class PlayerPage extends React.Component {
 
     state = {}
 
     render() {
         return (
-            <Page className="butler">
+            <Page className="Player">
+                <BottomNav/>
             </Page>
         )
     }

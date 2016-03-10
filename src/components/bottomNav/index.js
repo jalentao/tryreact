@@ -5,53 +5,26 @@
 "use strict"
 
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as TabActions from '../../actions/tabs'
 import {TabBar} from '../../lib/react-weui'
 
 import './index.less'
 
-export default class BottomNav extends React.Component {
+class BottomNav extends React.Component {
 
-    state = {
-
+    static propTypes = {
+        tabs: React.PropTypes.array
     }
 
-    onChange(tab){
-        switch (tab.value){
-            case 'theme':
-                window.location.href = '/weixin/services.shtml'
-                break
-
-            case 'player':
-                window.location.href = '/weixin/butlers.shtml'
-                break
-
-            case 'welfare':
-                window.location.href = '/weixin/welfare.shtml'
-                break
-
-            case 'mine':
-                window.location.href = '/weixin/mine.shtml'
-                break
-
-            default:
-                break
-        }
+    onChange = (value) => {
+        this.props.actions.changeTab(value)
+        window.location.assign('#'+value)
     }
 
     render() {
-        const tabs = [{
-            name: '服务',
-            value: 'theme'
-        }, {
-            name: '管家',
-            value: 'player'
-        }, {
-            name: '福利',
-            value: 'welfare'
-        }, {
-            name: '我的',
-            value: 'mine'
-        }]
+        const {tabs} = this.props
         return (
             <div className="bottom_nav">
                 <TabBar tabs={tabs} onChange={this.onChange}/>
@@ -59,4 +32,21 @@ export default class BottomNav extends React.Component {
         )
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        tabs: state.tabs
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(TabActions, dispatch)
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(BottomNav)
 

@@ -17,6 +17,7 @@ import Icon from './components/icon'
 import Page from './components/page'
 import Header from './components/header'
 import TabBar from './components/tabBar'
+import Label from './components/label'
 module.exports = {
     Button: Button,
     ButtonArea: ButtonArea,
@@ -39,5 +40,6 @@ module.exports = {
 
     Page: Page,
     Header: Header,
-    TabBar: TabBar
+    TabBar: TabBar,
+    Label: Label
 };

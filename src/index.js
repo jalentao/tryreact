@@ -1,23 +1,26 @@
-/**
- * Created by jf on 15/12/10.
- */
-
 "use strict"
 
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import configureStore from './store/configureStore'
 import { Router, Route} from 'react-router'
 
-import Theme from 'pages/theme'
-import Player from 'pages/player'
-import Welfare from './pages/welfare'
-import Mine from './pages/mine'
-import Play from './pages/play'
+import ThemePage from './pages/theme'
+import PlayerPage from './pages/player'
+import PlayPage from './pages/play'
+import WelfarePage from './pages/welfare'
+import MinePage from './pages/mine'
+
 ReactDOM.render((
-    <Router>
-        <Route path="/" component={play}/>
-        <Route path="/player" component={Player}/>
-        <Route path="/welfare" component={Welfare}/>
-        <Route path="/mine" component={Mine}/>
-    </Router>
-), document.getElementById('container'));
+    <Provider store={configureStore()}>
+        <Router>
+            <Route path="/" component={PlayPage}/>
+            <Route path="/theme" component={ThemePage}/>
+            <Route path="/player" component={PlayerPage}/>
+            <Route path="/play" component={PlayPage}/>
+            <Route path="/welfare" component={WelfarePage}/>
+            <Route path="/mine" component={MinePage}/>
+        </Router>
+    </Provider>
+), document.getElementById('container'))
